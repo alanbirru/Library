@@ -5,9 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="script.js" defer></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
 
     <title>Library</title>
   </head>
-  <body></body>
+  <body>
+    <h1>My Library</h1>
+    <button class="add-book-btn"><h3>Add a Book</h3></button>
+
+    <div class="newBook-modal">
+      <div class="modal-content">
+        <div class="title-modal">
+          <h1>New book</h1>
+        </div>
+
+        <div class="myInput">
+          <label for="title-input">Title</label>
+          <input
+            type="text"
+            name="title-input"
+            id="title-input"
+            placeholder="Title"
+          />
+        </div>
+
+        <div class="myInput">
+          <label for="author-input">Author</label>
+          <input
+            type="text"
+            name="author-input"
+            id="author-input"
+            placeholder="Author"
+          />
+        </div>
+
+        <div class="myInput">
+          <label for="pages-input">Number of pages</label>
+          <input
+            type="text"
+            name="pages-input"
+            id="pages-input"
+            placeholder="Number of pages"
+          />
+        </div>
+
+        <div class="check-box-input">
+          <label for="read-input">Have you read it?</label>
+          <input type="checkbox" name="pages-input" id="read-input" />
+        </div>
+
+        <div class="buttons-modal">
+          <button class="add">Add</button>
+          <button class="close">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-container"></div>
+  </body>
 </html>
