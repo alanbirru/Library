@@ -9,6 +9,7 @@ body {
   font-size: 23px;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
+  background-color: rgb(230, 230, 230);
 }
 .newBook-modal {
   z-index: 1;
@@ -62,4 +63,54 @@ body {
 .buttons-modal button {
   font-size: 1.3rem;
   padding: 15px;
+}
+.book-container {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.book-container div {
+  background-color: orange;
+  border-radius: 10px;
+  padding: 80px;
+}
+.book-container div h4 {
+  font-size: 2rem;
+}
+
+.title {
+  background-color: rgb(8, 98, 172);
+  color: white;
+  padding: 30px;
+  font-size: 3rem;
+  text-align: center;
+  /* border-bottom: 15px solid black; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+button.add-book-btn {
+  display: block;
+  margin: 50px auto;
+
+  padding: 30px;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  transition: ease-out 0.1s;
+  border: 2px solid rgb(41, 41, 41);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.newBook-modal input {
+  border-radius: 10px;
+}
+
+button.add-book-btn:hover {
+  background-color: rgb(31, 82, 125);
+  color: white;
 }
