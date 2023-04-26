@@ -1,106 +1,130 @@
-// Modal appear selectors
-const addBookBtn = document.querySelector(".add-book-btn");
+// Define variables
+const library = [];
+let bookId = 0;
+const container = document.querySelector('.book-container');
+const newBookBtn = document.querySelector('.btn-newBook');
+const submitBtn = document.querySelector('.submitBtn');
+const modal = document.getElementById('myModal');
+const closeBtn = document.querySelector('.close');
+const authorInput = document.querySelector('.authorInput');
+const titleInput = document.querySelector('.titleInput');
+const pageInput = document.querySelector('.pageInput');
+const readInput = document.querySelector('.readInput');
 
-const newBookModal = document.querySelector(".newBook-modal");
-const closeModalBtn = document.querySelector(".close");
-
-const addBtn = document.querySelector(".add");
-const titleInput = document.querySelector("#title-input");
-const authorInput = document.querySelector("#author-input");
-const pagesInput = document.querySelector("#pages-input");
-const readInput = document.querySelector("#read-input");
-const bookContainer = document.querySelector(".book-container");
-let myLibrary = [];
-
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+// Define Book class
+class Book {
+  constructor(id, author, title, pages, read) {
+    this.id = id;
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
+  }
 }
 
-function addBookToLibrary(title, author, pages, read) {
-  let myBook = new Book(title, author, pages, read);
-  myLibrary.push(myBook);
-  // IndexOf the book
-  myBook.myIndex = myLibrary.indexOf(myBook);
+// Define functions
+function addBookToLibrary() {
+  const readValue = readInput.checked ? 'Read' : 'Unread';
+  const book = new Book(
+    bookId,
+    authorInput.value,
+    titleInput.value,
+    pageInput.value,
+    readValue
+  );
+  library.push(book);
+  bookId++;
+  return book;
+}
 
-  // showing card
-  let cardDiv = document.createElement("div");
-  cardDiv.classList.add(`card-${myBook.myIndex}`);
-  bookContainer.appendChild(cardDiv);
-
-  let titleH4 = document.createElement("h4");
-  titleH4.textContent = myBook.title;
-  let authorH4 = document.createElement("h4");
-  authorH4.textContent = myBook.author;
-  let pagesH4 = document.createElement("h4");
-  pagesH4.textContent = myBook.pages;
-  let readH4 = document.createElement("h4");
-  readH4.textContent = myBook.read;
-  let deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.classList.add(`button-${myBook.myIndex}`);
-
-  cardDiv.appendChild(titleH4);
-  cardDiv.appendChild(authorH4);
-  cardDiv.appendChild(pagesH4);
-  cardDiv.appendChild(readH4);
-  cardDiv.appendChild(deleteBtn);
-
-  deleteBtn.addEventListener("click", function () {
-    cardDiv.remove();
+function displayBooks() {
+  container.innerHTML = '';
+  library.forEach((book) => {
+    const div = document.createElement('div');
+    div.classList.add('book');
+    div.setAttribute('data-id', book.id);
+    const authorP = createParagraph(book.author);
+    const titleP = createParagraph(book.title);
+    const pagesP = createParagraph(book.pages);
+    const readBtn = createButton(book.read, 'read-toggle');
+    if (book.read === 'Read') {
+      readBtn.style.backgroundColor = '#51FA7D';
+    } else {
+      readBtn.style.backgroundColor = '#FA5151';
+    }
+    const deleteBtn = createButton('Delete', 'deleteBtn');
+    div.append(authorP, titleP, pagesP, readBtn, deleteBtn);
+    container.appendChild(div);
   });
-
-  console.log();
-
-  // cardDiv.classList.add(`card ${myBook.myIndex}`);
 }
 
-function closeModalFunc() {
-  newBookModal.style.display = "none";
-  titleInput.value = "";
-  authorInput.value = "";
-  pagesInput.value = "";
+function createParagraph(text) {
+  const p = document.createElement('p');
+  p.textContent = text;
+  return p;
+}
+
+function createButton(text, className) {
+  const btn = document.createElement('button');
+  btn.textContent = text;
+  btn.classList.add(className);
+  return btn;
+}
+
+function toggleReadStatus(event) {
+  const bookId = parseInt(event.target.parentNode.getAttribute('data-id'));
+  const index = library.findIndex((book) => book.id === bookId);
+  if (index !== -1) {
+    library[index].read = library[index].read === 'Read' ? 'Unread' : 'Read';
+    displayBooks();
+  }
+}
+
+function closeModal() {
+  modal.style.display = 'none';
+  clearModal();
+}
+
+function clearModal() {
+  authorInput.value = '';
+  titleInput.value = '';
+  pageInput.value = '';
   readInput.checked = false;
 }
-function deleteBook() {
-  element.delete();
+
+function deleteBook(event) {
+  const bookId = parseInt(event.target.parentNode.getAttribute('data-id'));
+  const index = library.findIndex((book) => book.id === bookId);
+  if (index !== -1) {
+    library.splice(index, 1);
+    displayBooks();
+  }
 }
 
-// Modal events
-addBookBtn.addEventListener("click", function () {
-  newBookModal.style.display = "flex";
+// Event listeners
+newBookBtn.addEventListener('click', () => (modal.style.display = 'block'));
+closeBtn.addEventListener('click', closeModal);
+window.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
 });
 
-closeModalBtn.addEventListener("click", function () {
-  closeModalFunc();
-});
-
-window.onclick = function (event) {
-  if (event.target == newBookModal) {
-    closeModalFunc();
-  }
-};
-
-// add event
-addBtn.addEventListener("click", function () {
-  if (
-    titleInput.value === "" ||
-    authorInput.value === "" ||
-    pagesInput.value === ""
-  ) {
-    alert("fill all the fields");
-  } else {
-    addBookToLibrary(
-      titleInput.value,
-      authorInput.value,
-      pagesInput.value,
-      readInput.checked
-    );
-
-    closeModalFunc();
-    console.log(myLibrary);
+container.addEventListener('click', (event) => {
+  if (event.target.classList.contains('read-toggle')) {
+    toggleReadStatus(event);
+  } else if (event.target.classList.contains('deleteBtn')) {
+    deleteBook(event);
   }
 });
-console.log(myLibrary);
+
+submitBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  const book = addBookToLibrary();
+  displayBooks();
+  closeModal();
+  return book;
+});
+
+// Display initial books
+displayBooks();
+
+console.log(library);
